@@ -61,3 +61,16 @@ jobs:
         with:
           command: code test command
         continue-on-error: true
+
+  secur12ty:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Ensure Gradle Wrapper is executable
+        run: chmod +x ./gradlew
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/gradle-jdk11@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
