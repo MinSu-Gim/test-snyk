@@ -38,9 +38,15 @@ jobs:
         run: chmod +x ./gradlew
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/gradle-jdk11@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        continue-on-error: true
+        with:
+          args: --sarif-file-output=snyk.sarif
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
 
   code-security:
     runs-on: ubuntu-latest
