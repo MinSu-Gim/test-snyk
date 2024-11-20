@@ -61,3 +61,14 @@ jobs:
         with:
           command: code test
         continue-on-error: true
+  
+  add-snyk-project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure Gradle Wrapper is executable
+        run: chmod +x ./gradlew
+      - name: Monitor project with Snyk
+        run: snyk monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
